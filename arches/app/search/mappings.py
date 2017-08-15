@@ -113,6 +113,7 @@ def prepare_search_index(resource_model_id, create=False):
                 'properties' : {
                     'graphid': {'type': 'keyword'},
                     'resourceinstanceid': {'type': 'keyword'},
+                    'root_ontology_class': {'type':'keyword'},
                     'displayname': {'type': 'keyword'},
                     'displaydescription': {'type': 'keyword'},
                     'map_popup': {'type': 'keyword'},
@@ -127,14 +128,21 @@ def prepare_search_index(resource_model_id, create=False):
                         }
                     },
                     'strings' : {
-                        'type' : 'text',
-                        'index' : 'analyzed',
-                        'fields' : {
-                            'raw' : {'type': 'keyword'},
-                            'folded': { 'type': 'text', 'analyzer': 'folding'}
+                        'type' : 'nested',
+                        'properties': {
+                            'string': {
+                                'type' : 'text',
+                                'index' : 'analyzed',
+                                'fields' : {
+                                    'raw' : {'type': 'keyword'},
+                                    'folded': { 'type': 'text', 'analyzer': 'folding'}
+                                }
+                            },
+                            'nodegroup_id' : {'type': 'keyword'},
                         }
                     },
                     'domains' : {
+                        'type' : 'nested',
                         'properties' : {
                             'value' : {
                                 'type' : 'text',
@@ -145,9 +153,11 @@ def prepare_search_index(resource_model_id, create=False):
                             },
                             'conceptid' : {'type': 'keyword'},
                             'valueid' : {'type': 'keyword'},
+                            'nodegroup_id' : {'type': 'keyword'}
                         }
                     },
                     'geometries' : {
+                        'type' : 'nested',
                         'properties': {
                             'geom': {
                                 'properties': {
@@ -168,22 +178,33 @@ def prepare_search_index(resource_model_id, create=False):
                         }
                     },
                     'points': {
+                        'type' : 'nested',
                         'properties' : {
                             'point' : {'type': 'geo_point'},
                             'nodegroup_id' : {'type': 'keyword'},
                         }
                     },
                     'dates' : {
+                        'type' : 'nested',
                         'properties' : {
                             'date' : {'type': 'float'},
                             'nodegroup_id' : {'type': 'keyword'},
+                            'nodeid' : {'type': 'keyword'},
                         }
                     },
                     'numbers' : {
-                        "type" : "double"
+                        'type' : 'nested',
+                        'properties' : {
+                            'number' : {'type': 'double'},
+                            'nodegroup_id' : {'type': 'keyword'}
+                        }
                     },
-                    "date_ranges": {
-                      "type": "float_range"
+                    'date_ranges': {
+                        'type' : 'nested',
+                        'properties' : {
+                            'date_range' : {'type': 'float_range'},
+                            'nodegroup_id' : {'type': 'keyword'}
+                        }
                     }
                 }
             }
@@ -220,7 +241,9 @@ def prepare_resource_relations_index(create=False):
                     'notes': {'type': 'text'},
                     'relationshiptype': {'type': 'keyword'},
                     'resourceinstanceidfrom': {'type': 'keyword'},
-                    'resourceinstanceidto': {'type': 'keyword'}
+                    'resourceinstanceidto': {'type': 'keyword'},
+                    'created': {'type': 'keyword'},
+                    'modified': {'type': 'keyword'}
                 }
             }
         }
