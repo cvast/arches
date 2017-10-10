@@ -25,7 +25,7 @@ RUN apt-get update -y &&\
 		python-software-properties \
 		dos2unix \
 		curl \
-		libpq-dev \
+		libpq-dev==9.5.2-1 \
 		libgeos-3.5.0 \
 		openjdk-8-jre-headless \
 		git-all \
@@ -69,7 +69,7 @@ WORKDIR ${ARCHES_ROOT}
 RUN bower --allow-root install
 RUN . ${WEB_ROOT}/ENV/bin/activate &&\
 	pip install -e . --no-binary :all: &&\
-	pip install -r ${ARCHES_ROOT}/arches/install/requirements_docker.txt &&\
+	pip install -r ${ARCHES_ROOT}/arches/install/requirements.txt &&\
 	pip install -r ${ARCHES_ROOT}/arches/install/requirements_dev.txt
 
 
