@@ -25,7 +25,8 @@ RUN apt-get update -y &&\
 		python-software-properties \
 		dos2unix \
 		curl \
-		libpq-dev==9.5.2-1 \
+		libpq5=9.5.2-1 \
+		libpq-dev=9.5.2-1 \
 		libgeos-3.5.0 \
 		openjdk-8-jre-headless \
 		git-all \
